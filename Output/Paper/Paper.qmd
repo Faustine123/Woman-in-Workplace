@@ -100,7 +100,7 @@ model4 <- lm_robust(Value ~ TIME, data = wagegap_rawdata)
 library(modelsummary)
 modelsummary(list(model, model2, model3, model4),
              fmt = 2,
-             title = "Model Summary of",
+             title = "Model Summary of Discrimination and prejudice against women in the workplace",
              output = 'markdown')
 ```
 
