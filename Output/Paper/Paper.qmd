@@ -201,7 +201,7 @@ While the persistence of the wage gap can be attributed to a variety of factors,
 
 ### Modeling
 
-```{r}
+```{r table2, echo=FALSE, warning=FALSE, message=FALSE}
 
 
 # Run a linear regression analysis
@@ -209,15 +209,22 @@ While the persistence of the wage gap can be attributed to a variety of factors,
 library(estimatr)
 model <- lm_robust(share_of_ceos_who_are_women_in_percents ~ year, data = ceo_rawdata)
 
+model2 <- lm_robust(share_of_university_and_college_presidents_who_are_women_in_percents ~ year, data = unipresidents_rawdata)
 
-# Print the summary of the regression model
-summary(model)
+model3 <- lm_robust(Value ~ TIME, data = edu_rawdata)
 
-#table
+model4 <- lm_robust(Value ~ TIME, data = wagegap_rawdata)
 
-library(texreg)
 
+# Create model summary table
+library(modelsummary)
+modelsummary(list(model, model2, model3, model4),
+             fmt = 2,
+             title = "Model Summary of",
+             output = 'markdown')
 ```
+  
+
 
 
 ### Limitations and Next steps
