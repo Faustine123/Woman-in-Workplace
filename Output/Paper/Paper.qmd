@@ -1,0 +1,227 @@
+---
+title: "Woman in Workplace ^[Code and data are available at:https://github.com/Faustine123/Newspapers-in-Times-of-Low-Advertising-Revenues]"
+author: "Faustine Fan"
+date: "20 April 2023"
+date-format: long
+abstract: "Newspaper(Will add after I finished this paper:)"
+format: pdf
+documentclass: article
+number-sections: true
+toc: true
+geometry: margin = 1.3in 
+bibliography: references.bib
+---
+\newpage
+
+##  Intoduction
+
+Gender inequality in the workplace is a pervasive issue that has been a topic of concern for many years. Despite significant progress in recent years, women continue to face a range of challenges in the workplace, including barriers to entry, lower wages, reduced opportunities for advancement, and gender-based discrimination. These issues can have a profound impact on women's lives, affecting their financial security, professional development and overall well-being. The lack of workplace equality between genders can be attributed to factors such as long-standing patriarchal sociocultural narratives, differences in education levels, unconscious employer bias and outdated cultural narratives that continue to limit women's potential in the workplace.
+
+Although progress has been made on gender inequality in the workplace in recent decades with the awakening and resistance of female self-awareness, gender gaps still exist and women continue to face challenges specific to their gender. It is therefore important to continue to explore gender inequality in the workplace, identify the root causes of the problem, and develop strategies to address it. One of the key factors contributing to gender inequality in the workplace is the cultural narrative of patriarchy that is deeply rooted in our society. In addition, women often face unconscious bias from employers and co-workers, and women's marital and reproductive status can be included in invisible lists of discrimination, all of which without question further limit their access to career advancement and earning potential.
+
+Another key manifestation of gender inequality in the workplace is the lack of female representation in leadership positions. Despite the progress made in recent years, women still make up only a small percentage of executives, including CEOs and university presidents. This lack of representation can limit women's access to advancement opportunities and can perpetuate a culture of gender-based discrimination within organizations. This lack of representation can stem from society and from women themselves. Additionally, the gender pay gap is an important factor in gender inequality in the workplace. The most cited we have seen is that for every $1 an adult male earns, a female can only earn $0.70. To earn the same amount, women need to work harder [@euqalincome]. The causes of the pay gap are complex and multifaceted, but they are sometimes rooted in discrimination and bias based on unconscious gender.
+
+This paper will explore gender inequality in the workplace through education levels, the percentage of female CEOs in Fortune 500 companies, the percentage of female university presidents, and pay gap data.By examining these factors, we can better understand the root causes of gender inequality in the workplace and look for ways to potentially eliminate these deep-rooted biases and discrimination.
+
+##  Data
+### Source and Methodology
+
+This article is based on data collected in data.world. Women Fortune 500 CEOs dataset from Fortune 500 and Catalyst. The Gender Wage Gap and Adult Education Level datasets are from OECD.org.
+
+The Fortune 500 is an annual list compiled by Fortune magazine that ranks the top 500 companies in the United States based on their total revenue. The companies on this list are leaders in their respective industries, and their financial success is seen as a reflection of their overall management and competitiveness. Catalyst, on the other hand, is a global nonprofit organization dedicated to promoting gender equality in the workplace.Catalyst's research and initiatives have made significant progress in gender diversity and equality in corporate leadership, particularly at Fortune 500 companies. Their work highlights the benefits of having a diverse leadership team, including increased innovation, better decision-making and improved financial performance.
+
+The American Council on Education (ACE) is a membership organization that represents the interests of U.S. colleges and universities. Founded in 1918, the organization advocates for higher education policies that support access, equity and student success. In addition to its policy work, ACE provides a range of services to its members, including research and data analysis. The American College Presidents Study (ACPS) is a research project conducted by ACE to examine the demographics, experiences and attitudes of college and university presidents in the United States. The study provides a comprehensive overview of the challenges and opportunities facing higher education leaders, including issues related to gender and diversity. Through its research and advocacy efforts, ACE is playing an important role in shaping the future of higher education in the United States.
+
+The Organization for Economic Cooperation and Development (OECD) is an international organization that promotes economic development, prosperity and sustainable growth. It was founded in 1961 and is comprised of 37 member countries, including the United States, Canada, Australia, and several European and Asian countries. The OECD is committed to providing governments with data, analysis and policy recommendations to address a wide range of economic and social issues. One of the OECD's key initiatives in recent years has been the Gender Initiative, which aims to promote gender equality and women's empowerment in a range of policy areas. Through extensive data collection and analysis, the OECD has become a key resource for policy makers and researchers around the world seeking to understand and address the challenges facing modern economies.
+
+To conduct this analysis, I utilized the R programming language [@R] and various software packages for data cleaning, exploration, and visualization. The raw data was obtained in the form of csv. files. To clean and analyze the data, I used the packages tidyverse [@tidyr] and dplyr [@dplyr]. To visualize the data, I utilized the ggplot2 [@ggplot] package, scales [@scales] package. And I used the lubridate [@lube] package for the automatically generated dates.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(fig.width=6.5, fig.height=2.8) 
+
+# loading in relevant libraries
+library(tidyverse)
+library(dplyr, warn.conflicts = FALSE)
+library(tidyr)
+library(readxl)
+library(data.table)
+library(lubridate)
+library(haven)
+library(readxl)
+library(ggplot2)
+library(scales)
+
+### Input data ###
+edu_rawdata<-read.csv(here::here("Input/Raw Data/Educ_gender.csv"))
+wagegap_rawdata<-read.csv(here::here("Input/Raw Data/gender_wage_gap.csv"))
+emplymentrate_rawdata<-read.csv(here::here("Input/Raw Data/unemployment rate_gender.csv"))
+ceo_rawdata<-read.csv(here::here("Input/Raw Data/women_ceos.csv"))
+unipresidents_rawdata<-read.csv(here::here("Input/Raw Data/women_university_presidents - Sheet1.csv"))
+
+```
+
+### Weakness and Strength
+
+The strength of these datasets is that they are based on a large representative sample of the U.S. population and provide empirical evidence of gender inequality in the workplace across years. These datasets are the basis for action to address gender inequality in the workplace. By providing specific evidence of gender disparities, policymakers and organizations can design targeted interventions to promote gender equality.
+
+The disadvantage of these datasets is that the data are not updated in real time and we cannot track the most recent data. Second, because Women University Presidents only has data for the U.S., the rest of the datasets used in this paper are filtered for the U.S., which may lead to some ambiguity and bias.
+
+\newpage
+
+##  Results
+
+###  Woman Fortune 500 CEOs
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+#| label: fig-1ceos
+#| fig-cap: Woman Fortune 500 CEOs
+
+ceo_rawdata |>
+  ggplot(mapping = aes(x = year, y = share_of_ceos_who_are_women_in_percents)) +
+  geom_line() +
+  #label settings
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))+
+  scale_color_brewer(
+    palette = "Set1")+
+  labs(y = "Share of Woman Ceos %", 
+       x = "Year"
+       )+
+  theme_minimal()
+
+```
+According to the @fig-1ceos, it is clear that the percentage of female CEOs has generally trended upward over the years. in 2000, the percentage of female CEOs in Fortune 500 companies was only 0.4%. Since then, however, there has been a consistent increase, with the percentage reaching 4.8% in 2018. In 2017, the figure reached its highest in 24 years, 6.4%. This shows that more and more women are proving their ability to take charge of the discourse. Despite this growing trend, it is clear that there is still a long way to go before true gender parity is achieved in top leadership positions. The remaining 90 percent or so exclude LGBT people (a group that in some sociocultural narratives may have a harder time getting promoted in companies than women, despite their abilities), thus showing that the percentage of male leaders is a huge majority. 
+
+The percentage of female CEOs in the Fortune 500 remains quite low, suggesting that women continue to face significant barriers to entry and advancement in the corporate world. Overall, the chart of Fortune 500 female CEOs shows the progress and challenges in achieving gender equality in the corporate world. While the percentage of female CEOs has increased over time, there is still much work to be done to break down the barriers that prevent women from reaching top leadership positions.
+
+\newpage
+
+###  Woman University Presidents in US
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+#| fig-cap: "Woman University Presidents in US"
+#| label: fig-2presidents
+
+unipresidents_rawdata |>
+  ggplot(mapping = aes(x = year, y = share_of_university_and_college_presidents_who_are_women_in_percents)) +
+  geom_line() +
+  #label settings
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))+
+  scale_color_brewer(
+    palette = "Set1")+
+  labs(y = "Share of Woman University Presidents %", 
+       x = "Year"
+       )+
+  theme_minimal()
+
+```
+The @fig-2presidents shows the percentage of female presidents within U.S. universities from 1986-2016. The data shows that the percentage of female presidents has continued to rise over three decades, improving by 20.6%. From 1986, when only 9.5% of university presidents were women, it rose to 30.1% in 2016. While this may seem like progress, it is important to note that this increase occurred over a thirty-year period, indicating that university leadership has been slow to make progress toward gender parity. The percentages in this data are based on accredited U.S. degree-granting institutions, which means the data are relatively credible. Overall, the graph highlights the continued underrepresentation of women in university leadership positions and the need for additional efforts to break down barriers and promote gender equity. Universities must actively work to achieve gender diversity in leadership to promote the inclusion and representation of women in higher education.
+
+\newpage
+
+###  Hihg-Education Gender Comparison in US
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+#| fig-cap: "Hihg-Education Gender Comparison in US"
+#| label: fig-3Edu
+
+edu_rawdata |> 
+  filter (LOCATION == "USA", SUBJECT %in% c("TRY_MEN","TRY_WOMEN"))|>
+  ggplot(mapping = aes(x = TIME, y = Value, color = SUBJECT)) +
+  geom_line() +
+  #label settings
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))+
+  scale_color_brewer(
+    palette = "Set1")+
+  labs(y = "Tetiray Education Proportion %", 
+       x = "Year"
+       )+
+  theme_minimal()
+
+```
+@fig-3Edu shows a comparison of the gender distribution of higher education degree completions for the U.S. population aged 25-64 years from 1981 to 2021. The data show that participation in higher education completion has trended upward dramatically over the past four decades for both women and men. From an initial rate of approximately 19%, the number of people with a higher education degree in 2021 has reached 50.32% of the total population. This trend is a testament to the growing importance of education and the overall positive social development.
+
+Moreover, the gap between the percentage of women and men with a higher education degree has been narrowing since 1990, and in 2002, the percentage of women with a higher education degree was 38.30% compared to 37.96% of men. From 2002-2021, the percentage of women with higher education degrees has been higher than that of men. These data suggest that women are increasingly seeking higher education opportunities, which may reflect a shift toward greater gender equity in educational attainment. It is important to note that while the data show significant progress in educational attainment, it does not necessarily translate into equal representation or opportunity in the workforce.
+
+
+\newpage
+
+### Gender Wage Gap in US
+ 
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+#| fig-cap: "Gender Wage Gap in US"
+#| label: fig-4wage
+
+wagegap_rawdata |>
+  filter (LOCATION == "USA")|>
+  ggplot(mapping = aes(x = TIME, y = Value, color = SUBJECT)) +
+  geom_line() +
+  #label settings
+  theme(axis.text.x = element_text(angle = 70, hjust = 1))+
+  scale_color_brewer(
+    palette = "Set1")+
+  labs(y = "Woman vs. Man Wage Gap %", 
+       x = "Year"
+       )+
+  theme_minimal()
+
+```
+The @fig-4wage shows the gender wage gap for full-time employees in the U.S. from 1973 to 2016 and the gender wage gap for self-employed workers in the U.S. from 2005 to 2015. Overall, the wage gap between the genders of full-time employees has been gradually decreasing from about 40% initially to about 20% in 2016. the wage gap decreased faster around 1980 to around 1990 however, since then, the rate of decline has slowed significantly. in 2016, men earned only 82 cents for every dollar earned by women. The gender earnings gap for the self-employed declined from 63.91% in 2005 to 57.24% in 2015. Despite the declining numbers, this large wage gap is sobering.
+
+While the persistence of the wage gap can be attributed to a variety of factors, it is of concern that men hold more of society's resources, which I believe is the primary cause of these gaps. While there have been efforts to address the wage gap, such as equal pay legislation and initiatives to promote pay transparency, much more needs to be done to ensure that women are paid fairly for their work. The gender wage gap not only affects women's economic well-being, but also has broader implications for gender equality and social justice.
+
+\newpage
+
+## Discussion
+### Woman Fortune 500 CEOs
+
+
+### Woman University Presidents in US
+
+
+### Hihg-Education Gender Comparison in US
+
+
+### Gender Wage Gap in US
+
+
+### Modeling
+
+```{r}
+
+
+# Run a linear regression analysis
+
+library(estimatr)
+model <- lm_robust(share_of_ceos_who_are_women_in_percents ~ year, data = ceo_rawdata)
+
+
+# Print the summary of the regression model
+summary(model)
+
+#table
+
+library(texreg)
+
+```
+
+
+### Limitations and Next steps
+
+
+{{< pagebreak >}}
+## References
