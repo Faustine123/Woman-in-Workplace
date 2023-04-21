@@ -1,9 +1,9 @@
 ---
-title: "Woman in Workplace ^[Code and data are available at:https://github.com/Faustine123/Newspapers-in-Times-of-Low-Advertising-Revenues]"
+title: "Discrimination and prejudice against women in the workplace ^[Code and data are available at:https://github.com/Faustine123/Newspapers-in-Times-of-Low-Advertising-Revenues]"
 author: "Faustine Fan"
 date: "20 April 2023"
 date-format: long
-abstract: "Newspaper(Will add after I finished this paper:)"
+abstract: "Gender inequality in the workplace has been a persistent issue affecting women in all industries and regions. Despite the progress made in recent years, women continue to face barriers such as wage gaps, lack of advancement opportunities, and discrimination. This paper will illustrate the bias and discrimination women suffer in the workplace through data on the percentage of women fortune 500 ceos, the percentage of female presidents of U.S. universities, the percentage of women and men completing higher education, and the gender wage gap. At the same time, this paper discusses the causes and consequences of gender inequality in the workplace, and explores potential solutions to address the problem. Factors contributing to gender inequality include societal attitudes, biases in hiring and promotion, and a workplace culture that favors men. By addressing gender inequality in the workplace, we can create a more equitable and empowering environment for women to succeed in their careers."
 format: pdf
 documentclass: article
 number-sections: true
