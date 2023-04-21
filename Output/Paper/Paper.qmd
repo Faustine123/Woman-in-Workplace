@@ -71,8 +71,49 @@ The disadvantage of these datasets is that the data are not updated in real time
 
 \newpage
 
-##  Results
+## Model
+### Linear Regression
+Building a model to analyze gender trends in various areas such as Fortune 500 CEOs, university presidents, higher education degree completion rates, and the U.S. gender wage gap requires careful consideration of several factors. First, selecting the appropriate variables is critical to creating a model that accurately reflects the relationships between the variables being analyzed. Second, data cleaning and pre-processing are critical to ensure the accuracy of the data and to eliminate any potential bias. Third, choosing the appropriate regression method is important to ensure that the model accurately reflects the relationships between the variables. In this case, a linear regression model may be appropriate because it can show the strength and direction of the relationship between two variables.
 
+Linear regression is a statistical method that is typically used to analyze trends in data over time. In the case of the female Fortune 500 CEO dataset, linear regression can be used to examine trends in the representation of women in CEO positions over the years. By fitting a regression line to the data, it is possible to quantify the rate of change in female CEO representation and identify any significant changes or shifts in trends over time. The equation for the simple linear regression model can be written as y = mx + b, where y denotes the dependent variable, x denotes the independent variable, m denotes the slope of the line, and b denotes the y-intercept. In the data set analyzed, the linear regression model can be used to examine the percentage of female CEOs in the Fortune 500, in addition to the percentage of female presidents of U.S. universities, the gender distribution of U.S. higher education degree completion rates, and the gender wage gap in the U.S. in relation to the independent variable of time. By analyzing the regression coefficients, the direction and strength of the relationship between the variables can be determined and the information used to make predictions or draw conclusions about the data. Linear regression can be a powerful tool for identifying trends and making predictions, but it is important to carefully consider the data and assumptions made when constructing the model.
+
+However, since I used four datasets with different variables, I created their own linear regression model for each dataset to examine the relationship between the two variables. The general hypothesis behind considering this model is that the percentage of female ceo's, female principals, and women completing higher education all increase over time, and the wage gap between the two genders decreases over time.However, in general, the relationships between these variables are reflective of discrimination against women in the workplace, which may be slowly improving.
+
+\newpage
+### Summary
+```{r table2, echo=FALSE, warning=FALSE, message=FALSE}
+
+
+# Run a linear regression analysis
+
+library(estimatr)
+model <- lm_robust(share_of_ceos_who_are_women_in_percents ~ year, data = ceo_rawdata)
+
+model2 <- lm_robust(share_of_university_and_college_presidents_who_are_women_in_percents ~ year, data = unipresidents_rawdata)
+
+model3 <- lm_robust(Value ~ TIME, data = edu_rawdata)
+
+model4 <- lm_robust(Value ~ TIME, data = wagegap_rawdata)
+
+
+# Create model summary table
+library(modelsummary)
+modelsummary(list(model, model2, model3, model4),
+             fmt = 2,
+             title = "Model Summary of",
+             output = 'markdown')
+```
+
+This table shows a summary of four linear regression models with different variables. Each model is summarized with its intercept, coefficients, and goodness-of-fit measures (e.g., R2, R2Adj., AIC, BIC, and RMSE). The R2 values in the model summaries indicate how well the regression line fits the data, with values ranging from 0 to 1. Model 1 is associated with the Female Fortune 500 CEO dataset, which has an R2 value of 0.93, indicating that the model explains 93% of the variation in the data. Model 2 is associated with U.S. women's college presidents with an R2 value of 0.99, indicating a strong relationship between the independent and dependent variables. Model 3 is related to high education gender comparisons in the United States with a fairly low R2 value of 0.012, indicating that the model does not explain well the variation in the data. Model 4 is related to the gender wage gap in the United States with a negative coefficient on the year variable (-0.17), indicating a decreasing trend in the gender wage gap over time. Overall, these linear regression models provide insight into the relationships between different variables and help make data-driven decisions.
+
+Moreover,the intercept and annual coefficient indicate the starting point and rate of change of the dependent variable over time, respectively. For the female Fortune 500 CEO dataset, the intercept is -488.28 and the annual coefficient is 0.24, which indicates a positive linear relationship between the number of female CEOs and time. Similarly, the U.S. female university presidents dataset shows a positive linear relationship between the number of female presidents and time with an intercept of -1306.49 and an annual coefficient of 0.66.
+
+In addition, the AIC and BIC values represent the quality of the model, with lower values indicating a better fit. Root mean squared error (RMSE) values provide information about the predictive accuracy of the model, with lower values indicating higher accuracy. Overall, the linear regression models in these four datasets provide useful insights into trends in gender diversity in leadership positions.
+
+
+\newpage
+
+##  Results
 ###  Woman Fortune 500 CEOs
 
 ```{r}
@@ -199,30 +240,7 @@ While the persistence of the wage gap can be attributed to a variety of factors,
 ### Gender Wage Gap in US
 
 
-### Modeling
 
-```{r table2, echo=FALSE, warning=FALSE, message=FALSE}
-
-
-# Run a linear regression analysis
-
-library(estimatr)
-model <- lm_robust(share_of_ceos_who_are_women_in_percents ~ year, data = ceo_rawdata)
-
-model2 <- lm_robust(share_of_university_and_college_presidents_who_are_women_in_percents ~ year, data = unipresidents_rawdata)
-
-model3 <- lm_robust(Value ~ TIME, data = edu_rawdata)
-
-model4 <- lm_robust(Value ~ TIME, data = wagegap_rawdata)
-
-
-# Create model summary table
-library(modelsummary)
-modelsummary(list(model, model2, model3, model4),
-             fmt = 2,
-             title = "Model Summary of",
-             output = 'markdown')
-```
   
 
 
